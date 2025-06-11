@@ -1,6 +1,8 @@
 // src/components/DetectionResults.js
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import styled from 'styled-components';
+import config from '../config';
+import axios from 'axios';
 
 // Modern architectural theme colors
 const theme = {

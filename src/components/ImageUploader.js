@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import config from '../config';
 
 // Define breakpoints for responsive design
 const breakpoints = {
@@ -802,6 +803,7 @@ const ImageUploader = ({ onImageUploaded, isLoading }) => {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
+  const [sessionId, setSessionId] = useState('');
   const fileInputRef = useRef(null);
   
   // Create preview when file is selected
@@ -894,7 +896,7 @@ const ImageUploader = ({ onImageUploaded, isLoading }) => {
       
       setUploadStatus('Uploading to server...');
       
-      const response = await axios.post('http://localhost:5000/api/upload', formData, {
+      const response = await axios.post(`${config.API_URL}/api/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -909,6 +911,7 @@ const ImageUploader = ({ onImageUploaded, isLoading }) => {
       setUploadSuccess(true);
       
       if (response.data && response.data.session_id) {
+        setSessionId(response.data.session_id);
         onImageUploaded(response.data.image, response.data.session_id);
       } else {
         setError('Invalid response from server');

@@ -4,6 +4,7 @@ import axios from 'axios';
 import ImageUploader from '../components/ImageUploader';
 import PointSelector from '../components/PointSelector';
 import DetectionResults from '../components/DetectionResults';
+import config from '../config';
 
 /**
  * Styled components section
@@ -618,10 +619,20 @@ const Home = () => {
    * @param {string} imageBase64 - Base64 encoded image data
    * @param {string} sessionId - Session ID from the server
    */
-  const handleImageUploaded = (imageBase64, sessionId) => {
+  const handleImageUploaded = async (imageBase64, sessionId) => {
     setImageData(imageBase64);
     setSessionId(sessionId);
     setStep(2); // Proceed to step 2 (scale definition)
+
+    try {
+      const response = await axios.post(`${config.API_URL}/api/process`, {
+        image: imageBase64,
+        sessionId: sessionId
+      });
+      // ... rest of the function
+    } catch (error) {
+      // ... error handling
+    }
   };
 
   /**

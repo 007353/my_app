@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
+import config from '../config';
 
 // Architectural theme colors
 const theme = {
@@ -348,7 +350,7 @@ const PointSelector = ({ imageData, sessionId, onScaleFactorsCalculated }) => {
     // Fetch session data from backend
     const fetchSessionData = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/session-data/${sessionId}`);
+        const response = await axios.get(`${config.API_URL}/api/session/${sessionId}`);
         
         if (response.ok) {
           const data = await response.json();
@@ -613,17 +615,11 @@ const PointSelector = ({ imageData, sessionId, onScaleFactorsCalculated }) => {
     addDebugInfo(`Calculating scale factors with X=${xLength}ft, Y=${yLength}ft`);
     
     try {
-      const response = await fetch('http://localhost:5000/api/calculate-scale', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          session_id: sessionId,
-          points: points,
-          x_length_feet: parseFloat(xLength),
-          y_length_feet: parseFloat(yLength)
-        }),
+      const response = await axios.post(`${config.API_URL}/api/calculate-scale`, {
+        sessionId,
+        points: points,
+        x_length_feet: parseFloat(xLength),
+        y_length_feet: parseFloat(yLength)
       });
       
       const data = await response.json();

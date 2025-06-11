@@ -1,6 +1,15 @@
 import axios from 'axios';
 
-const API_URL = 'https://flask-2d-to-3d.onrender.com'; // Render deployment URL
+// Use environment variable for API URL
+const API_URL = process.env.REACT_APP_API_URL || 'https://flask-2d-to-3d.onrender.com';
+
+// Create axios instance with base URL
+const apiClient = axios.create({
+    baseURL: API_URL,
+    headers: {
+        'Content-Type': 'application/json',
+    }
+});
 
 const api = {
   async uploadImage(file) {
@@ -8,7 +17,7 @@ const api = {
     formData.append('image', file);
     
     try {
-      const response = await axios.post(`${API_URL}/api/upload`, formData, {
+      const response = await apiClient.post('/api/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -35,7 +44,7 @@ const api = {
   
   async calculateScaleFactors(sessionId, points, xLengthFeet, yLengthFeet) {
     try {
-      const response = await axios.post(`${API_URL}/api/calculate-scale`, {
+      const response = await apiClient.post('/api/calculate-scale', {
         session_id: sessionId,
         points: points,
         x_length_feet: xLengthFeet,
@@ -54,7 +63,7 @@ const api = {
   
   async detectFurniture(sessionId) {
     try {
-      const response = await axios.post(`${API_URL}/api/detect`, {
+      const response = await apiClient.post('/api/detect', {
         session_id: sessionId
       });
       return response.data;

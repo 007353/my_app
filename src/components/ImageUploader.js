@@ -891,19 +891,9 @@ const ImageUploader = ({ onImageUploaded, isLoading }) => {
     setError('');
     
     try {
-      const formData = new FormData();
-      formData.append('image', selectedFile);
-      
-      setUploadStatus('Uploading to server...');
-      
-      const response = await axios.post(`${config.API_URL}/api/upload`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-        onUploadProgress: (progressEvent) => {
-          const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-          setUploadProgress(Math.min(percentCompleted, 95)); // Cap at 95% until server responds
-        }
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/upload`, {
+        image: selectedFile,
+        sessionId: sessionId
       });
       
       setUploadProgress(100);

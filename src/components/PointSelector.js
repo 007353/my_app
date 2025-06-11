@@ -350,7 +350,7 @@ const PointSelector = ({ imageData, sessionId, onScaleFactorsCalculated }) => {
     // Fetch session data from backend
     const fetchSessionData = async () => {
       try {
-        const response = await axios.get(`${config.API_URL}/api/session/${sessionId}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/session/${sessionId}`);
         
         if (response.ok) {
           const data = await response.json();
@@ -615,7 +615,7 @@ const PointSelector = ({ imageData, sessionId, onScaleFactorsCalculated }) => {
     addDebugInfo(`Calculating scale factors with X=${xLength}ft, Y=${yLength}ft`);
     
     try {
-      const response = await axios.post(`${config.API_URL}/api/calculate-scale`, {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/calculate-scale`, {
         sessionId,
         points: points,
         x_length_feet: parseFloat(xLength),

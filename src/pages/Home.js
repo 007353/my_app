@@ -625,7 +625,7 @@ const Home = () => {
     setStep(2); // Proceed to step 2 (scale definition)
 
     try {
-      const response = await axios.post(`${config.API_URL}/api/process`, {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/process`, {
         image: imageBase64,
         sessionId: sessionId
       });
